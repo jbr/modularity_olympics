@@ -11,11 +11,11 @@ class Queryer
     end
     
     def select(env)
-      build_query(env).select
+      env['nk.query'].select
     end
 
     def execute(env)
-      build_query(env).execute
+      env['nk.query'].execute
     end
   end
 end

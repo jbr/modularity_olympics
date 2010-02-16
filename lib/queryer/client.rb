@@ -10,14 +10,14 @@ class Queryer
     
     def select(query_string)
       with_connection(query_string) do |env|
-        @queryer.build_query(env)
+        env['nk.query'] = @queryer.build_query(env)
         @queryer.select(env)
       end
     end
 
     def execute(query_string)
       with_connection(query_string) do |env|
-        @queryer.build_query(env)
+        env['nk.query'] = @queryer.build_query(env)
         @queryer.execute(env)
       end
     end
