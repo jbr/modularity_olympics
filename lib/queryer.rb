@@ -6,12 +6,16 @@ require "queryer/middleware/middleware"
 
 class Queryer
   class QueryMaker
+    def build_query(env)
+      env["nk.query_class"].new(env["nk.connection"], env["nk.query_string"])
+    end
+    
     def select(env)
-      env["nk.query"].new(env["nk.connection"], env["nk.query_string"]).select
+      build_query(env).select
     end
 
     def execute(env)
-      env["nk.query"].new(env["nk.connection"], env["nk.query_string"]).execute
+      build_query(env).execute
     end
   end
 end

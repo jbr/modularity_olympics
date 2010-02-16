@@ -4,16 +4,22 @@
 class Queryer
   class Client
     def initialize(pool, queryer)
-      @pool    = pool
+      @pool = pool
       @queryer = queryer
     end
-
+    
     def select(query_string)
-      with_connection(query_string) { |env| @queryer.select(env) }
+      with_connection(query_string) do |env|
+        @queryer.build_query(env)
+        @queryer.select(env)
+      end
     end
 
     def execute(query_string)
-      with_connection(query_string) { |env| @queryer.execute(env) }
+      with_connection(query_string) do |env|
+        @queryer.build_query(env)
+        @queryer.execute(env)
+      end
     end
 
     def transaction
@@ -28,7 +34,7 @@ class Queryer
       {
         "nk.connection" => connection, 
         "nk.query_string" => query_string, 
-        "nk.query" => Query
+        "nk.query_class" => Query
       }
     end
 

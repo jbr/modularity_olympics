@@ -13,6 +13,10 @@ class Queryer
     def execute(env)
       delegate(:execute, env)
     end
+    
+    def build_query(env)
+      delegate(:build_query, env)
+    end
 
     def delegate(method, env)
       @queryer.send(method, env)
