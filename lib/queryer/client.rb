@@ -8,18 +8,19 @@ class Queryer
       @queryer = queryer
     end
     
-    def select(query_string)
+    def with_query(query_string)
       with_connection(query_string) do |env|
         env['nk.query'] = @queryer.build_query(env)
-        @queryer.select(env)
+        yield env
       end
+    end
+    
+    def select(query_string)
+      with_query(query_string) { |env| @queryer.select(env) }
     end
 
     def execute(query_string)
-      with_connection(query_string) do |env|
-        env['nk.query'] = @queryer.build_query(env)
-        @queryer.execute(env)
-      end
+      with_query(query_string) { |env| @queryer.execute(env) }
     end
 
     def transaction
